@@ -7,4 +7,4 @@ class StateEnum(StrEnum):
     MAIN_MENU = auto()
     SETTINGS = auto()
     GAME = auto()
-    LOADER = auto()
+    LOADER_STATE = auto()
