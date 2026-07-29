@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from abc import ABC
 from typing import TYPE_CHECKING
 
 import pygame
@@ -15,7 +14,7 @@ if TYPE_CHECKING:
 __all__ = ("BaseState",)
 
 
-class BaseState(State["BaseState"], ABC):
+class BaseState(State["BaseState"]):
     manager: BaseManager  # pyright: ignore[reportIncompatibleVariableOverride]
     window: Surface
 
