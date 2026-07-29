@@ -13,7 +13,9 @@ def main() -> None:
     clock = pygame.time.Clock()
 
     state_manager = BaseManager(
-        post_init_state=StateEnum.GAME, bound_state_type=BaseState, window=window
+        post_init_state=StateEnum.GAME,
+        bound_state_type=BaseState,
+        window=window,
     )
     state_manager.load_states(LoaderState, GameState)
     state_manager.change_state(StateEnum.LOADER_STATE)
