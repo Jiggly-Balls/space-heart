@@ -17,6 +17,8 @@ class SpaceLayer:
 
     def update(self, direction: Vector2, speed: float, dt: float) -> None:
         self.offset_pos -= speed * direction * dt
+        self.offset_pos.x %= self.width
+        self.offset_pos.y %= self.height
 
     def draw(self, surface: Surface) -> None:
         x = int(self.offset_pos.x)
