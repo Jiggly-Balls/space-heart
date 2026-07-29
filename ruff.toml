@@ -49,6 +49,7 @@ ignore = [
     "TRY003",
     "D101",
     "RUF012",
+    "ERA001",
 ]
 fixable = [
     "C401",
