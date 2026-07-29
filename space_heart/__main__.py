@@ -1,15 +1,18 @@
+from __future__ import annotations
+
 from typing import TYPE_CHECKING
 
 import pygame
 
+from space_heart.core.const import GAME_TITLE, WINDOW_HEIGHT, WINDOW_WIDTH
 from space_heart.states.impl import GameState
 from space_heart.states.meta import BaseManager, BaseState, LoaderState, StateEnum
 
 
 def main() -> None:
     pygame.init()
-    pygame.display.set_caption("Space Heart")
-    window = pygame.display.set_mode((640, 360))
+    pygame.display.set_caption(GAME_TITLE)
+    window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     clock = pygame.time.Clock()
 
     state_manager = BaseManager(
