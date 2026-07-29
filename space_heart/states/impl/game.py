@@ -13,7 +13,8 @@ from space_heart.states.meta import BaseState, StateEnum
 if TYPE_CHECKING:
     from typing import TypedDict
 
-    from pygame import Surface
+    from pygame import Surface, Event
+
 
     class StarConfig(TypedDict):
         size: int
@@ -49,9 +50,17 @@ class GameState(BaseState, state_name=StateEnum.GAME):
             },
         ]
         for config, surf in zip(self.star_config, layers, strict=True):
-            for _ in range(config["count"]):
-                pos_x = random.randint(0, WINDOW_WIDTH)
-                pos_y = random.randint(0, WINDOW_HEIGHT)
+            for pos_x, pos_y in zip(
+                random.sample(
+                    range(5, WINDOW_WIDTH - 5),
+                    config["count"],
+                ),
+                random.sample(
+                    range(5, WINDOW_HEIGHT - 5),
+                    config["count"],
+                ),
+                strict=True,
+            ):
                 pygame.draw.circle(
                     surf,
                     random.choice([(255, 222, 222), (172, 192, 216), (222, 255, 252)]),
@@ -68,12 +77,19 @@ class GameState(BaseState, state_name=StateEnum.GAME):
             for layer in layers
         ]
         self.player = Player()
+        self.clear: bool = True
+
+    def process_event(self, event: Event, dt: float) -> None:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
+            self.clear = not self.clear
+        super().process_event(event, dt)
 
     def process_update(self, dt: float) -> None:
-        self.window.fill((0, 0, 0))
+        if self.clear:
+            self.window.fill((0, 0, 0))
 
         self.player.update(dt)
 
-        for index, layer in enumerate(self.space_layers):
+        for index, layer in enumerate(self.space_layers, start=1):
             layer.update(self.player.direction, self.player.speed * (index * 0.5), dt)
             layer.draw(self.window)
