@@ -13,6 +13,7 @@ if TYPE_CHECKING:
 
 _funcs_to_load: list[LoaderFunc] = []
 
+
 def _mark_to_load(func: LoaderFunc) -> LoaderFunc:
     _funcs_to_load.append(func)
     return func
@@ -20,8 +21,7 @@ def _mark_to_load(func: LoaderFunc) -> LoaderFunc:
 
 class LoaderState(BaseState, state_name=StateEnum.LOADER_STATE):
     @_mark_to_load
-    def _generate_space_sheets(self) -> None:
-        ...
+    def _generate_space_sheets(self) -> None: ...
 
     def on_enter(self, previous_state: BaseState | None) -> None:
         for func in _funcs_to_load:

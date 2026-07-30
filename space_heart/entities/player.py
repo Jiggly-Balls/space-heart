@@ -12,7 +12,7 @@ class Player:
     def __init__(self) -> None:
         self.direction: Vector2 = pygame.Vector2()
         self.camera: Vector2 = pygame.Vector2()
-        self.speed: float = 200.0
+        self.speed: float = 100
 
     def update(self, dt: float) -> None:
         key_pressed = pygame.key.get_pressed()
