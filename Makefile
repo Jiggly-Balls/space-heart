@@ -9,4 +9,4 @@ check:
 	uv run --dev ty check .
 
 start:
-	uv run python -m durkbot
+	uv run python -m space_heart
