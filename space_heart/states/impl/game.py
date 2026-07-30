@@ -11,15 +11,7 @@ from space_heart.entities.player import Player
 from space_heart.states.meta import BaseState, StateEnum
 
 if TYPE_CHECKING:
-    from typing import TypedDict
-
-    from pygame import Surface, Event
-
-
-    class StarConfig(TypedDict):
-        size: int
-        count: int
-        colour: tuple[int, int, int]
+    from pygame import Event, Surface
 
 
 class GameState(BaseState, state_name=StateEnum.GAME):
@@ -32,32 +24,15 @@ class GameState(BaseState, state_name=StateEnum.GAME):
             for _ in range(3)
         ]
 
-        self.star_config: list[StarConfig] = [
-            {
-                "size": 3,
-                "count": 50,
-                "colour": (255, 222, 222),
-            },
-            {
-                "size": 4,
-                "count": 100,
-                "colour": (172, 192, 216),
-            },
-            {
-                "size": 5,
-                "count": 150,
-                "colour": (222, 255, 252),
-            },
-        ]
-        for config, surf in zip(self.star_config, layers, strict=True):
+        for size, surf in enumerate(layers, start=1):
             for pos_x, pos_y in zip(
                 random.sample(
-                    range(5, WINDOW_WIDTH - 5),
-                    config["count"],
+                    range(5, WINDOW_WIDTH - 5, 2),
+                    size * 50,
                 ),
                 random.sample(
-                    range(5, WINDOW_HEIGHT - 5),
-                    config["count"],
+                    range(5, WINDOW_HEIGHT - 5, 2),
+                    size * 50,
                 ),
                 strict=True,
             ):
@@ -65,7 +40,7 @@ class GameState(BaseState, state_name=StateEnum.GAME):
                     surf,
                     random.choice([(255, 222, 222), (172, 192, 216), (222, 255, 252)]),
                     (pos_x, pos_y),
-                    config["size"],
+                    size,
                 )
 
         self.space_layers = [
@@ -91,5 +66,5 @@ class GameState(BaseState, state_name=StateEnum.GAME):
         self.player.update(dt)
 
         for index, layer in enumerate(self.space_layers, start=1):
-            layer.update(self.player.direction, self.player.speed * (index * 0.5), dt)
+            layer.update(self.player.direction, self.player.speed * (index * 0.2), dt)
             layer.draw(self.window)
