@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from space_heart.core.const import GAME_TITLE, WINDOW_HEIGHT, WINDOW_WIDTH
+from space_heart.core.const import FPS, GAME_TITLE, WINDOW_HEIGHT, WINDOW_WIDTH
 from space_heart.states.impl import GameState
 from space_heart.states.meta import BaseManager, BaseState, LoaderState, StateEnum
 
@@ -26,7 +26,7 @@ def main() -> None:
         assert state_manager.current_state is not None
 
     while state_manager.is_running:
-        dt = clock.tick(60.0) / 1000
+        dt = clock.tick(FPS) / 1000
 
         for event in pygame.event.get():
             state_manager.current_state.process_event(event, dt)

@@ -3,11 +3,12 @@ from __future__ import annotations
 import random
 from enum import Enum
 
-__all__ = ("GAME_TITLE", "WINDOW_HEIGHT", "WINDOW_WIDTH", "Colour")
+__all__ = ("FPS", "GAME_TITLE", "WINDOW_HEIGHT", "WINDOW_WIDTH", "Colour")
 
 GAME_TITLE: str = "Space Heart"
 WINDOW_WIDTH: int = 960
 WINDOW_HEIGHT: int = 540
+FPS: float = 120.0
 
 SPACE_LAYERS: int = 10
 SPACE_DRAG: float = 0.98
