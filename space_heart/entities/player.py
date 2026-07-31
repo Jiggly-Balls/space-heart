@@ -16,6 +16,7 @@ class Player:
         self.camera: Vector2 = pygame.Vector2()
         self.speed: float = 100
         self.acceleration: float = 0.1
+        self.max_magnitude: float = 5.0
 
     def update(self, dt: float) -> None:
         key_pressed = pygame.key.get_pressed()
@@ -32,9 +33,10 @@ class Player:
 
         if self.direction.magnitude() != 0.0:
             self.direction *= SPACE_DRAG
-
         if self.direction.magnitude() < 0.000001:
             self.direction.update(0, 0)
+        if self.direction.magnitude() > self.max_magnitude:
+            self.direction.scale_to_length(self.max_magnitude)
 
         self.camera += self.direction * self.speed * dt
 
