@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 import pygame
 
 from space_heart.core.background import SpaceLayer
-from space_heart.core.const import WINDOW_HEIGHT, WINDOW_WIDTH
+from space_heart.core.const import SPACE_LAYERS, WINDOW_HEIGHT, WINDOW_WIDTH, Colour
 from space_heart.entities.player import Player
 from space_heart.states.meta import BaseState, StateEnum
 
@@ -21,26 +21,30 @@ class GameState(BaseState, state_name=StateEnum.GAME):
                 (WINDOW_WIDTH, WINDOW_HEIGHT),
                 pygame.SRCALPHA,
             )
-            for _ in range(3)
+            for _ in range(SPACE_LAYERS)
         ]
 
+        range_width = range(5, WINDOW_WIDTH - 5)
+        range_height = range(5, WINDOW_HEIGHT - 5)
+
         for size, surf in enumerate(layers, start=1):
-            for pos_x, pos_y in zip(
+            for pos_x, pos_y in zip(  # noqa: B905
                 random.sample(
-                    range(5, WINDOW_WIDTH - 5, 2),
-                    size * 50,
+                    range_width,
+                    min(size * 50, len(range_width)),
                 ),
                 random.sample(
-                    range(5, WINDOW_HEIGHT - 5, 2),
-                    size * 50,
+                    range_height,
+                    min(size * 50, len(range_height)),
                 ),
-                strict=True,
+                # strict=True,
             ):
+                rad = size / 10 + 1  # 1 if size > 5 else size
                 pygame.draw.circle(
                     surf,
-                    random.choice([(255, 222, 222), (172, 192, 216), (222, 255, 252)]),
+                    Colour.rand_star_colour().value,
                     (pos_x, pos_y),
-                    size,
+                    rad,
                 )
 
         self.space_layers = [
@@ -53,6 +57,7 @@ class GameState(BaseState, state_name=StateEnum.GAME):
         ]
         self.player = Player()
         self.clear: bool = True
+        self.noise_offset = pygame.Vector2(0.001, 0.001)
 
     def process_event(self, event: Event, dt: float) -> None:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
@@ -66,5 +71,9 @@ class GameState(BaseState, state_name=StateEnum.GAME):
         self.player.update(dt)
 
         for index, layer in enumerate(self.space_layers, start=1):
-            layer.update(self.player.direction, self.player.speed * (index * 0.2), dt)
+            layer.update(
+                self.player.direction + self.noise_offset,
+                self.player.speed * (index * 0.2),
+                dt,
+            )
             layer.draw(self.window)
