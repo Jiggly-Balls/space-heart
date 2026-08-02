@@ -39,12 +39,11 @@ class GameState(BaseState, state_name=StateEnum.GAME):
                 ),
                 # strict=True,
             ):
-                rad = size / 10 + 1  # 1 if size > 5 else size
                 pygame.draw.circle(
                     surf,
                     Colour.rand_star_colour().value,
                     (pos_x, pos_y),
-                    rad,
+                    1,
                 )
 
         self.space_layers = [
@@ -57,7 +56,7 @@ class GameState(BaseState, state_name=StateEnum.GAME):
         ]
         self.player = Player()
         self.clear: bool = True
-        self.noise_offset = pygame.Vector2(0.001, 0.001)
+        self.noise_offset = pygame.Vector2(0.003, 0.003)
 
     def process_event(self, event: Event, dt: float) -> None:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
