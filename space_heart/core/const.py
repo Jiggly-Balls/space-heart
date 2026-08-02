@@ -10,7 +10,7 @@ WINDOW_WIDTH: int = 960
 WINDOW_HEIGHT: int = 540
 FPS: float = 120.0
 
-SPACE_LAYERS: int = 10
+SPACE_LAYERS: int = 8
 SPACE_DRAG: float = 0.98
 
 
