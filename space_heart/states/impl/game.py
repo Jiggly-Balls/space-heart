@@ -43,7 +43,7 @@ class GameState(BaseState, state_name=StateEnum.GAME):
                     surf,
                     Colour.rand_star_colour().value,
                     (pos_x, pos_y),
-                    1,
+                    1.5 + size / 10,
                 )
 
         self.space_layers = [
