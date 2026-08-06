@@ -1,9 +1,22 @@
 from __future__ import annotations
 
+import pathlib
 import random
+from dataclasses import dataclass
 from enum import Enum
 
-__all__ = ("FPS", "GAME_TITLE", "WINDOW_HEIGHT", "WINDOW_WIDTH", "Colour")
+__all__ = (
+    "DIR_ROOT",
+    "DIR_SHADERS",
+    "DIR_SHADERS_FRAG",
+    "DIR_SHADERS_VERT",
+    "FPS",
+    "GAME_TITLE",
+    "WINDOW_HEIGHT",
+    "WINDOW_WIDTH",
+    "Colour",
+    "ShaderEnum",
+)
 
 GAME_TITLE: str = "Space Heart"
 WINDOW_WIDTH: int = 960
@@ -12,6 +25,11 @@ FPS: float = 120.0
 
 SPACE_LAYERS: int = 8
 SPACE_DRAG: float = 0.98
+
+DIR_ROOT = pathlib.Path().parent.parent
+DIR_SHADERS = DIR_ROOT / "shaders"
+DIR_SHADERS_VERT = DIR_SHADERS / "vertex"
+DIR_SHADERS_FRAG = DIR_SHADERS / "fragment"
 
 
 class Colour(Enum):
@@ -33,3 +51,13 @@ class Colour(Enum):
                 Colour.WHITE,
             )
         )
+
+
+@dataclass(slots=True, frozen=True)
+class _ShaderData:
+    fragment: str | None
+    vertex: str
+
+
+class ShaderEnum(Enum):
+    DEFAULT = _ShaderData("default.frag", "default.vert")
