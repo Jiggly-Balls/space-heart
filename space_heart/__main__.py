@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import moderngl
 import pygame
 
 from space_heart.core.const import FPS, GAME_TITLE, WINDOW_HEIGHT, WINDOW_WIDTH
@@ -17,7 +16,6 @@ def main() -> None:
         (WINDOW_WIDTH, WINDOW_HEIGHT), pygame.OPENGL | pygame.DOUBLEBUF
     )
     clock = pygame.time.Clock()
-    ctx = moderngl.create_context(standalone=True)
 
     state_manager = BaseManager(
         post_init_state=StateEnum.GAME,

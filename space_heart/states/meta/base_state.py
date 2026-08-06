@@ -2,12 +2,16 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import moderngl
 import pygame
 from game_state import State
+from game_state.utils import MISSING
 
 if TYPE_CHECKING:
+    from moderngl import Context, Program
     from pygame import Event, Surface
 
+    from space_heart.core.const import ShaderEnum
     from space_heart.states.meta.base_manager import BaseManager
 
 
@@ -15,8 +19,10 @@ __all__ = ("BaseState",)
 
 
 class BaseState(State["BaseState"]):
-    manager: BaseManager  # pyright: ignore[reportIncompatibleVariableOverride]
-    window: Surface
+    manager: BaseManager
+    window: Surface = MISSING
+    shaders: dict[ShaderEnum, Program] = {}
+    ctx: Context = moderngl.create_context(standalone=True)
 
     def process_update(self, dt: float) -> None: ...
 
