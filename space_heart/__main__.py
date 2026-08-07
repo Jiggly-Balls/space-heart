@@ -26,6 +26,8 @@ def main() -> None:
     )
     clock = pygame.time.Clock()
     ctx = moderngl.create_context()
+    ctx.enable(moderngl.BLEND)
+    ctx.blend_func = (moderngl.SRC_ALPHA, moderngl.ONE_MINUS_SRC_ALPHA)
     window = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), flags=pygame.SRCALPHA)
     fps_deque = deque[float]()
 

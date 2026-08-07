@@ -35,8 +35,6 @@ class Player:
         self.ship_normals: Texture = load_texture(
             self.ctx, DIR_GRAPHICS_NORMALS / "ship09A.png"
         )
-        self.ship_texture.use(0)
-        self.ship_normals.use(1)
 
         self.ship_vao: VertexArray = create_vao(self.ctx, ShaderEnum.SHIP_SHADOW)
 
@@ -63,6 +61,9 @@ class Player:
         self.camera += self.direction * self.speed * dt
 
     def draw(self, surface: Surface) -> None:
+        self.ship_texture.use(0)
+        self.ship_normals.use(1)
+
         BaseState.shaders[ShaderEnum.SHIP_SHADOW]["diffuseMap"] = 0
         BaseState.shaders[ShaderEnum.SHIP_SHADOW]["normalMap"] = 1
         BaseState.shaders[ShaderEnum.SHIP_SHADOW]["lightPos"] = (
