@@ -13,7 +13,6 @@ from space_heart.core.const import (
     WINDOW_WIDTH,
     ShaderEnum,
 )
-from space_heart.core.helpers import surface_to_texture
 from space_heart.states.impl import GameState
 from space_heart.states.meta import BaseManager, BaseState, LoaderState, StateEnum
 
@@ -44,6 +43,7 @@ def main() -> None:
         array.array(
             "f",
             [
+                # x ,   y ,  u ,  v
                 -1.0, -1.0, 0.0, 1.0,
                  1.0, -1.0, 1.0, 1.0,
                 -1.0,  1.0, 0.0, 0.0,
@@ -57,6 +57,10 @@ def main() -> None:
         [(quad_data, "2f 2f", "in_position", "in_uv")],
     )
 
+    frame_tex = ctx.texture((WINDOW_WIDTH, WINDOW_HEIGHT), 4)
+    frame_tex.filter = (moderngl.NEAREST, moderngl.NEAREST)
+    frame_tex.swizzle = "BGRA"
+
     while state_manager.is_running:
         dt = clock.tick(FPS) / 1000
 
@@ -64,14 +68,14 @@ def main() -> None:
             state_manager.current_state.process_event(event, dt)
         state_manager.current_state.process_update(dt)
 
-        frame_tex = surface_to_texture(ctx, window)
+        frame_tex.write(window.get_view("1"))
         frame_tex.use(0)
         BaseState.shaders[ShaderEnum.QUAD]["tex"] = 0
         quad_vao.render(mode=moderngl.TRIANGLE_STRIP)
 
         pygame.display.flip()
 
-        frame_tex.release()
+    frame_tex.release()
 
 
 if __name__ == "__main__":
