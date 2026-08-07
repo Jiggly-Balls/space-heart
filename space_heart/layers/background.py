@@ -8,6 +8,9 @@ if TYPE_CHECKING:
     from pygame import Surface, Vector2
 
 
+__all__ = ("SpaceLayer",)
+
+
 class SpaceLayer:
     def __init__(self, surface: Surface, width: int, height: int) -> None:
         self.image: Surface = surface
