@@ -5,9 +5,9 @@ from typing import TYPE_CHECKING
 
 import pygame
 
-from space_heart.core.background import SpaceLayer
 from space_heart.core.const import SPACE_LAYERS, WINDOW_HEIGHT, WINDOW_WIDTH, Colour
 from space_heart.entities.player import Player
+from space_heart.layers.background import SpaceLayer
 from space_heart.states.meta import BaseState, StateEnum
 
 if TYPE_CHECKING:
