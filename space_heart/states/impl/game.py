@@ -68,7 +68,7 @@ class GameState(BaseState, state_name=StateEnum.GAME):
             self.window.fill((0, 0, 0))
 
         self.player.update(dt)
-        self.player.draw(...)
+        self.player.draw()
 
         for index, layer in enumerate(self.space_layers, start=1):
             layer.update(
