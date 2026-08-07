@@ -54,7 +54,7 @@ class GameState(BaseState, state_name=StateEnum.GAME):
             )
             for layer in layers
         ]
-        self.player = Player()
+        self.player = Player(self.ctx)
         self.clear: bool = True
         self.noise_offset = pygame.Vector2(0.001, 0.001)
 
@@ -68,6 +68,7 @@ class GameState(BaseState, state_name=StateEnum.GAME):
             self.window.fill((0, 0, 0))
 
         self.player.update(dt)
+        self.player.draw(...)
 
         for index, layer in enumerate(self.space_layers, start=1):
             layer.update(
