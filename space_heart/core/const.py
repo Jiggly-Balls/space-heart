@@ -10,6 +10,10 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 __all__ = (
+    "DIR_ASSETS",
+    "DIR_GRAPHICS",
+    "DIR_GRAPHICS_NORMALS",
+    "DIR_GRAPHICS_RAW",
     "DIR_ROOT",
     "DIR_SHADERS",
     "DIR_SHADERS_FRAG",
@@ -31,9 +35,15 @@ SPACE_LAYERS: int = 8
 SPACE_DRAG: float = 0.98
 
 DIR_ROOT: Path = pathlib.Path(__file__).resolve().parent.parent
+
+DIR_ASSETS: Path = DIR_ROOT / "assets"
+DIR_GRAPHICS: Path = DIR_ASSETS / "graphics"
+DIR_GRAPHICS_RAW: Path = DIR_GRAPHICS / "raw"
+DIR_GRAPHICS_NORMALS: Path = DIR_GRAPHICS / "normals"
+
 DIR_SHADERS: Path = DIR_ROOT / "shaders"
-DIR_SHADERS_VERT: Path = DIR_SHADERS / "vertex"
 DIR_SHADERS_FRAG: Path = DIR_SHADERS / "fragment"
+DIR_SHADERS_VERT: Path = DIR_SHADERS / "vertex"
 
 
 class Colour(Enum):
@@ -65,3 +75,4 @@ class _ShaderData:
 
 class ShaderEnum(Enum):
     QUAD = _ShaderData("quad.frag", "quad.vert")
+    SHIP_SHADOW = _ShaderData("ship_shader.frag", "quad.vert")
