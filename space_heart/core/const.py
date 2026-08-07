@@ -3,7 +3,7 @@ from __future__ import annotations
 import pathlib
 import random
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, auto
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -76,3 +76,8 @@ class _ShaderData:
 class ShaderEnum(Enum):
     QUAD = _ShaderData("quad.frag", "quad.vert")
     SHIP_SHADOW = _ShaderData("ship_shader.frag", "quad.vert")
+
+
+class ShaderRenderOrder(Enum):
+    QUAD = auto()
+    SHIP_SHADOW = auto()
