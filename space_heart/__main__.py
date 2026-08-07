@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import array
 from collections import deque
 from typing import TYPE_CHECKING
 
@@ -14,6 +13,7 @@ from space_heart.core.const import (
     WINDOW_WIDTH,
     ShaderEnum,
 )
+from space_heart.core.helpers import create_vao
 from space_heart.states.impl import GameState
 from space_heart.states.meta import BaseManager, BaseState, LoaderState, StateEnum
 
@@ -35,29 +35,13 @@ def main() -> None:
         window=window,
         ctx=ctx,
     )
-    state_manager.load_states(LoaderState, GameState)
+    state_manager.load_states(LoaderState)
+    state_manager.add_lazy_states(GameState)
     state_manager.change_state(StateEnum.LOADER_STATE)
     if TYPE_CHECKING:
         assert state_manager.current_state is not None
 
-    # fmt: off
-    quad_data = ctx.buffer(
-        array.array(
-            "f",
-            [
-                # x ,   y ,  u ,  v
-                -1.0, -1.0, 0.0, 1.0,
-                 1.0, -1.0, 1.0, 1.0,
-                -1.0,  1.0, 0.0, 0.0,
-                 1.0,  1.0, 1.0, 0.0,
-            ],
-        )
-    )
-    # fmt: on
-    quad_vao = ctx.vertex_array(
-        BaseState.shaders[ShaderEnum.QUAD],
-        [(quad_data, "2f 2f", "in_position", "in_uv")],
-    )
+    quad_vao = create_vao(ctx, ShaderEnum.QUAD)
 
     frame_tex = ctx.texture((WINDOW_WIDTH, WINDOW_HEIGHT), 4)
     frame_tex.filter = (moderngl.NEAREST, moderngl.NEAREST)
