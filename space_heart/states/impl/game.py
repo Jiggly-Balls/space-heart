@@ -28,7 +28,7 @@ class GameState(BaseState, state_name=StateEnum.GAME):
         range_height = range(5, WINDOW_HEIGHT - 5)
 
         for size, surf in enumerate(layers, start=1):
-            for pos_x, pos_y in zip(  # noqa: B905
+            for pos_x, pos_y in zip(
                 random.sample(
                     range_width,
                     min(size * 50, len(range_width)),
@@ -37,7 +37,7 @@ class GameState(BaseState, state_name=StateEnum.GAME):
                     range_height,
                     min(size * 50, len(range_height)),
                 ),
-                # strict=True,
+                strict=True,
             ):
                 pygame.draw.circle(
                     surf,
@@ -56,7 +56,7 @@ class GameState(BaseState, state_name=StateEnum.GAME):
         ]
         self.player = Player()
         self.clear: bool = True
-        self.noise_offset = pygame.Vector2(0.003, 0.003)
+        self.noise_offset = pygame.Vector2(0.001, 0.001)
 
     def process_event(self, event: Event, dt: float) -> None:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
