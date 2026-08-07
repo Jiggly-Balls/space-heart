@@ -25,7 +25,6 @@ class LoaderState(BaseState, state_name=StateEnum.LOADER_STATE):
     def _load_shaders(self) -> None:
         for shader in ShaderEnum:
             frag_content: str | None = None
-            vert_content: str
 
             if shader.value.fragment:
                 frag_path = DIR_SHADERS_FRAG / shader.value.fragment

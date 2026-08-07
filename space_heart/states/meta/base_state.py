@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import moderngl
 import pygame
 from game_state import State
 from game_state.utils import MISSING
@@ -21,8 +20,8 @@ __all__ = ("BaseState",)
 class BaseState(State["BaseState"]):
     manager: BaseManager
     window: Surface = MISSING
+    ctx: Context = MISSING
     shaders: dict[ShaderEnum, Program] = {}
-    ctx: Context = moderngl.create_context(standalone=True)
 
     def process_update(self, dt: float) -> None: ...
 
