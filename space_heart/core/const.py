@@ -30,7 +30,7 @@ FPS: float = 120.0
 SPACE_LAYERS: int = 8
 SPACE_DRAG: float = 0.98
 
-DIR_ROOT: Path = pathlib.Path().parent.parent / "space_heart"
+DIR_ROOT: Path = pathlib.Path(__file__).resolve().parent.parent
 DIR_SHADERS: Path = DIR_ROOT / "shaders"
 DIR_SHADERS_VERT: Path = DIR_SHADERS / "vertex"
 DIR_SHADERS_FRAG: Path = DIR_SHADERS / "fragment"
