@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import array
+from collections import deque
 from typing import TYPE_CHECKING
 
 import moderngl
@@ -26,6 +27,7 @@ def main() -> None:
     clock = pygame.time.Clock()
     ctx = moderngl.create_context()
     window = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT), flags=pygame.SRCALPHA)
+    fps_deque = deque[float]()
 
     state_manager = BaseManager(
         post_init_state=StateEnum.GAME,
@@ -74,6 +76,12 @@ def main() -> None:
         quad_vao.render(mode=moderngl.TRIANGLE_STRIP)
 
         pygame.display.flip()
+
+        fps_deque.append(clock.get_fps())
+        if len(fps_deque) > FPS:
+            fps_deque.popleft()
+
+        print(f"FPS = {sum(fps_deque) / len(fps_deque)}")
 
     frame_tex.release()
 
