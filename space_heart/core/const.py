@@ -4,6 +4,10 @@ import pathlib
 import random
 from dataclasses import dataclass
 from enum import Enum
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 __all__ = (
     "DIR_ROOT",
@@ -26,10 +30,10 @@ FPS: float = 120.0
 SPACE_LAYERS: int = 8
 SPACE_DRAG: float = 0.98
 
-DIR_ROOT = pathlib.Path().parent.parent
-DIR_SHADERS = DIR_ROOT / "shaders"
-DIR_SHADERS_VERT = DIR_SHADERS / "vertex"
-DIR_SHADERS_FRAG = DIR_SHADERS / "fragment"
+DIR_ROOT: Path = pathlib.Path().parent.parent / "space_heart"
+DIR_SHADERS: Path = DIR_ROOT / "shaders"
+DIR_SHADERS_VERT: Path = DIR_SHADERS / "vertex"
+DIR_SHADERS_FRAG: Path = DIR_SHADERS / "fragment"
 
 
 class Colour(Enum):
