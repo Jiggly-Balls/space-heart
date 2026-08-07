@@ -2,21 +2,23 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import moderngl
 import pygame
 
 from space_heart.core.const import (
     DIR_GRAPHICS_NORMALS,
     DIR_GRAPHICS_RAW,
     SPACE_DRAG,
+    WINDOW_HEIGHT,
+    WINDOW_WIDTH,
     ShaderEnum,
+    ShaderRenderOrder,
 )
-from space_heart.core.helpers import create_vao, load_texture
-from space_heart.states.meta import BaseState
+from space_heart.core.helpers import create_vao, load_texture, screen_to_clip
+from space_heart.layers.gpu import Renderable
 
 if TYPE_CHECKING:
-    from moderngl import Context, Texture, VertexArray
-    from pygame import Surface, Vector2
+    from moderngl import Context, Texture
+    from pygame import Vector2
 
 
 class Player:
@@ -36,7 +38,26 @@ class Player:
             self.ctx, DIR_GRAPHICS_NORMALS / "ship09A.png"
         )
 
-        self.ship_vao: VertexArray = create_vao(self.ctx, ShaderEnum.SHIP_SHADOW)
+        # self.ship_vao: VertexArray = create_vao(self.ctx, ShaderEnum.SHIP_SHADOW)
+
+        self.ship_renderable = Renderable(
+            level=ShaderRenderOrder.SHIP_SHADOW,
+            shader=ShaderEnum.SHIP_SHADOW,
+            vao=create_vao(
+                self.ctx,
+                ShaderEnum.SHIP_SHADOW,
+                (256, 320),
+                (WINDOW_WIDTH // 2 - 100, WINDOW_HEIGHT // 2 - 200),
+            ),
+            textures={
+                "diffuseMap": self.ship_texture,
+                "normalMap": self.ship_normals,
+            },
+            uniforms={
+                "lightColor": (1.0, 0.95, 0.85),
+                "ambientStrength": 0.25,
+            },
+        )
 
     def update(self, dt: float) -> None:
         key_pressed = pygame.key.get_pressed()
@@ -60,17 +81,8 @@ class Player:
 
         self.camera += self.direction * self.speed * dt
 
-    def draw(self, surface: Surface) -> None:
-        self.ship_texture.use(0)
-        self.ship_normals.use(1)
-
-        BaseState.shaders[ShaderEnum.SHIP_SHADOW]["diffuseMap"] = 0
-        BaseState.shaders[ShaderEnum.SHIP_SHADOW]["normalMap"] = 1
-        BaseState.shaders[ShaderEnum.SHIP_SHADOW]["lightPos"] = (
-            1.0,
-            1.0,
-        )  # wherever your star/light source is, in uv-space
-        BaseState.shaders[ShaderEnum.SHIP_SHADOW]["lightColor"] = (1.0, 0.95, 0.85)
-        BaseState.shaders[ShaderEnum.SHIP_SHADOW]["ambientStrength"] = 0.25
-
-        self.ship_vao.render(mode=moderngl.TRIANGLE_STRIP)
+    def draw(self) -> None:
+        self.ship_renderable.uniforms["lightPos"] = screen_to_clip(
+            *pygame.mouse.get_pos(), 1, 1
+        )[0]
+        self.ship_renderable.render()

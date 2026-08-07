@@ -12,8 +12,10 @@ from space_heart.core.const import (
     WINDOW_HEIGHT,
     WINDOW_WIDTH,
     ShaderEnum,
+    ShaderRenderOrder,
 )
 from space_heart.core.helpers import create_vao
+from space_heart.layers.gpu import Renderable
 from space_heart.states.impl import GameState
 from space_heart.states.meta import BaseManager, BaseState, LoaderState, StateEnum
 
@@ -43,11 +45,16 @@ def main() -> None:
     if TYPE_CHECKING:
         assert state_manager.current_state is not None
 
-    quad_vao = create_vao(ctx, ShaderEnum.QUAD)
-
     frame_tex = ctx.texture((WINDOW_WIDTH, WINDOW_HEIGHT), 4)
     frame_tex.filter = (moderngl.NEAREST, moderngl.NEAREST)
     frame_tex.swizzle = "BGRA"
+
+    _ = Renderable(
+        level=ShaderRenderOrder.QUAD,
+        shader=ShaderEnum.QUAD,
+        vao=create_vao(ctx, ShaderEnum.QUAD, (WINDOW_WIDTH, WINDOW_HEIGHT), (0, 0)),
+        textures={"tex": frame_tex},
+    )
 
     while state_manager.is_running:
         dt = clock.tick(FPS) / 1000
@@ -57,9 +64,9 @@ def main() -> None:
         state_manager.current_state.process_update(dt)
 
         frame_tex.write(window.get_view("1"))
-        frame_tex.use(0)
-        BaseState.shaders[ShaderEnum.QUAD]["tex"] = 0
-        quad_vao.render(mode=moderngl.TRIANGLE_STRIP)
+
+        for level in ShaderRenderOrder:
+            Renderable.instances[level].render()
 
         pygame.display.flip()
 
