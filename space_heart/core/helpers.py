@@ -35,12 +35,14 @@ def load_texture(ctx: Context, path: Path) -> Texture:
 
 def screen_to_clip(
     x: int, y: int, width: int, height: int
-) -> tuple[tuple[float, float], ...]:
+) -> tuple[
+    tuple[float, float], tuple[float, float], tuple[float, float], tuple[float, float]
+]:
     left = (x / WINDOW_WIDTH) * 2.0 - 1.0
     right = ((x + width) / WINDOW_WIDTH) * 2.0 - 1.0
-    # screen y grows downward, clip y grows upward — flip
     top = 1.0 - (y / WINDOW_HEIGHT) * 2.0
     bottom = 1.0 - ((y + height) / WINDOW_HEIGHT) * 2.0
+
     return (
         (left, bottom),
         (right, bottom),
