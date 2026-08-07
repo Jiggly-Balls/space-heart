@@ -64,4 +64,4 @@ class _ShaderData:
 
 
 class ShaderEnum(Enum):
-    DEFAULT = _ShaderData("default.frag", "default.vert")
+    QUAD = _ShaderData("quad.frag", "quad.vert")
