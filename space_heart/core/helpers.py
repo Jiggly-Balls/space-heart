@@ -16,6 +16,13 @@ if TYPE_CHECKING:
 
     from space_heart.core.const import ShaderEnum
 
+    type Clip = tuple[
+        tuple[float, float],
+        tuple[float, float],
+        tuple[float, float],
+        tuple[float, float],
+    ]
+
 __all__ = (
     "create_vao",
     "load_texture",
@@ -33,11 +40,7 @@ def load_texture(ctx: Context, path: Path) -> Texture:
     return texture
 
 
-def screen_to_clip(
-    x: int, y: int, width: int, height: int
-) -> tuple[
-    tuple[float, float], tuple[float, float], tuple[float, float], tuple[float, float]
-]:
+def screen_to_clip(x: int, y: int, width: int, height: int) -> Clip:
     left = (x / WINDOW_WIDTH) * 2.0 - 1.0
     right = ((x + width) / WINDOW_WIDTH) * 2.0 - 1.0
     top = 1.0 - (y / WINDOW_HEIGHT) * 2.0
@@ -67,11 +70,11 @@ def create_vao(
         array.array(
             "f",
             [
-                # x ,   y ,  u ,  v
-                *left_bottom,  0.0, 1.0,
+                # x, y       , u  ,  v
+                *left_bottom , 0.0, 1.0,
                 *right_bottom, 1.0, 1.0,
-                *left_top,     0.0, 0.0,
-                *right_top,    1.0, 0.0,
+                *left_top    , 0.0, 0.0,
+                *right_top   , 1.0, 0.0,
             ],
         )
     )
